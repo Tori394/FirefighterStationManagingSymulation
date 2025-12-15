@@ -1,12 +1,16 @@
 package view;
 
 import model.*;
+import model.strategie.StrategiaPZ;
+import model.zdarzenia.Zdarzenie;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
 public class Mapa extends JPanel {
     private final List<JednostkaStrazy> jednostki;
+    private List<Zdarzenie> zdarzenia;
 
     // Granice obszaru z pożarami
     private final double AREA_MIN_LON = 19.688292482742394;
@@ -41,6 +45,11 @@ public class Mapa extends JPanel {
         this.szaryObszarShape = new Rectangle(x1, y1, x2 - x1, y2 - y1);
     }
 
+    public void setZdarzenia(List<Zdarzenie> zdarzenia) {
+        this.zdarzenia = zdarzenia;
+        this.repaint();
+    }
+
     private void obliczGraniceGeograficzne() {
         double unitsMinLon = Double.MAX_VALUE;
         double unitsMaxLon = -Double.MAX_VALUE;
@@ -60,7 +69,7 @@ public class Mapa extends JPanel {
         viewMinLat = Math.min(unitsMinLat, AREA_MIN_LAT);
         viewMaxLat = Math.max(unitsMaxLat, AREA_MAX_LAT);
 
-        double margines = 0.02;
+        double margines = 0.03;
         viewMinLon -= margines;
         viewMaxLon += margines;
         viewMinLat -= margines;
@@ -102,9 +111,34 @@ public class Mapa extends JPanel {
 
             g2d.fillOval(x - 6, y - 6, 12, 12);
 
+            long wolneAuta = js.getAuta().stream()
+                    .filter(auto -> auto.czyMozeWyjechac())
+                    .count();
+
+            String opis = js.getNazwa() + " [" + wolneAuta + "]";
             g2d.setColor(Color.BLACK);
-            g2d.drawString(js.getNazwa(), x - 15, y - 10);
+            g2d.drawString(opis, x - 30, y - 10);
+
             g2d.setColor(new Color(0, 150, 0));
+        }
+
+        // Zdarzenia
+        if (zdarzenia != null) {
+            for (Zdarzenie z : zdarzenia) {
+                if (!z.isAktywne()) continue;
+
+                Wspolrzedne w = z.getPolozenie();
+                int x = lonToPixelX(w.getDlugosc());
+                int y = latToPixelY(w.getSzerokosc());
+
+                // Wybór koloru
+                g2d.setColor(z.getStrategia().getKolor());
+                g2d.fillOval(x - 4, y - 4, 8, 8);
+
+                g2d.setColor(Color.BLACK);
+                g2d.drawString(String.valueOf(z.getAktywneAuta()), x, y - 5);
+
+            }
         }
     }
 }
