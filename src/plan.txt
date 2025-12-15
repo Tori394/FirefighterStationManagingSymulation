@@ -1,0 +1,64 @@
+Lista/Tablica jednostek straży
+5 aut na każdą
+Iterator po tej tablicy która jednostka
+jest najbliżej zdarzenia
+
+Strategie(zdarzenia):
+-PZ (3 auta)
+-AF
+-MZ (2 auta)
+
+SKKM - obserwer (jednak niekoniecznie)
+
+Stan aut (wolny/zajęty)
+
+okno:
+(50100, 19670)
+(49950, 20040)
+600 x 1480
+
+prostokąt:
+(50154, 19688)
+(49958, 20024)
+h = 196
+w = 336
+
+JRG1:
+szerokość: 41
+długość: 273
+
+JRG2:
+szerokość: 67
+długość: 265
+
+JRG3:
+szerokość: 25
+długość:  217
+
+JRG4:
+szerokość: 63
+długość: 335
+
+JRG5:
+szerokość: 8
+długość: 251
+
+JRG6:
+szerokość: 85
+długość: 345
+
+JRG7:
+szerokość: 5
+długość: 307
+
+JednostkaStrazy Szkoła Aspirantów PSP:
+szerokość: 24
+długość: 363
+
+JednostkaStrazy Skawina:
+szerokość: 128
+długość: 126
+
+LSP Lotnisko w Balicach:
+szerokość: 22
+długość: 116
