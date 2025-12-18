@@ -22,48 +22,36 @@ public class Main {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        // --- KONFIGURACJA OBSERWATORÓW ---
 
         SKKM skkm = new SKKM(jednostki);
 
         GeneratorZdarzen generator = new GeneratorZdarzen();
         List<Zdarzenie> aktywneZdarzenia = new ArrayList<>();
 
-        // 1. SKKM nasłuchuje Generatora (Logika biznesowa)
         generator.dodajObserwatora(skkm);
 
-        // 2. Anonimowy obserwator nasłuchuje Generatora (Aktualizacja GUI/Listy)
         generator.dodajObserwatora(zdarzenie -> {
             aktywneZdarzenia.add(zdarzenie);
-            // Tutaj mapa odświeży się przy następnym cyklu pętli lub można wymusić repaint()
         });
 
-        // --- PĘTLA CZASU ---
         new Thread(() -> {
             try {
-                // Zmienna licząca sekundy do kolejnego pożaru
                 int sekundyDoZdarzenia = 0;
 
                 while (true) {
-                    // 1. Pętla kręci się ZAWSZE co 1 sekundę (dla płynności mapy)
                     Thread.sleep(1000);
 
-                    // 2. Logika odliczania do pożaru
                     if (sekundyDoZdarzenia <= 0) {
-                        // BUM! Czas minął, generujemy zdarzenie
                         generator.generujRaz();
 
-                        // Losujemy, za ile sekund kolejne zdarzenie (2-15s)
-                        sekundyDoZdarzenia = random.nextInt(14) + 2;
+                        sekundyDoZdarzenia = random.nextInt(8) + 2;
 
                     } else {
-                        // Jeszcze nie czas, tylko odliczamy
                         sekundyDoZdarzenia--;
                     }
 
-                    // 3. To wykonuje się CO SEKUNDĘ -> Aktualizacja liczników aut
                     aktywneZdarzenia.removeIf(z -> !z.isAktywne());
-                    mapa.setZdarzenia(aktywneZdarzenia); // Repaint mapy
+                    mapa.setZdarzenia(aktywneZdarzenia);
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();

@@ -25,7 +25,7 @@ public class GeneratorZdarzen {
         obserwatorzy.add(o);
     }
 
-    // Metoda void - bo nie zwraca, tylko POWIADAMIA
+    // powiadomienie
     public void generujRaz() {
         double lat = MIN_LAT + (MAX_LAT - MIN_LAT) * random.nextDouble();
         double lon = MIN_LON + (MAX_LON - MIN_LON) * random.nextDouble();
@@ -40,7 +40,6 @@ public class GeneratorZdarzen {
 
         Zdarzenie nowe = new Zdarzenie(strategia, pos);
 
-        // --- POWIADOMIENIE OBSERWATORÓW ---
         for (Obserwator o : obserwatorzy) {
             o.naNoweZdarzenie(nowe);
         }

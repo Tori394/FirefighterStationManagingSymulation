@@ -39,7 +39,7 @@ public class SKKM implements Obserwator {
                 if (auto.czyMozeWyjechac()) {
                     auto.wyjedzDoZdarzenia(zdarzenie);
                     zadysponowane++;
-                    System.out.println("Dysponuję wóz " + auto.getId() + " z " + jrg.getNazwa());
+                    System.out.println("Wysyłano wóz " + auto.getId() + " z " + jrg.getNazwa());
                     if (zadysponowane == potrzebneAuta) break;
                 }
             }
