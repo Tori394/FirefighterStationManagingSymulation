@@ -1,7 +1,7 @@
-<h1 align="center">🚒 System Symulacji Państwowej Straży Pożarnej - Kraków</h1>
+<h1 align="center">🚒 State Fire Service Simulation System - Kraków</h1>
 
 <p align="center">
-  Aplikacja w języku Java symulująca działanie Stanowiska Kierowania Komendanta Miejskiego (SKKM) w Krakowie. Program wizualizuje na mapie jednostki ratownicze (JRG), generuje losowe zdarzenia i automatycznie dysponuje siły i środki, uwzględniając czas dojazdu, czas akcji oraz fałszywe alarmy.
+  A Java application simulating the operations of the City Headquarters Command Centre (SKKM) in Kraków. The program visualizes rescue units (JRG) on a map, generates random incidents, and automatically dispatches resources, taking into account travel time, action duration, and false alarms.
 </p>
 
 <p align="center">
@@ -12,56 +12,37 @@
 </p>
 
 ---
-## 📋 Funkcjonalności
+## 📋 Features
 
-* **Rzeczywista Mapa:** Odzwierciedlenie koordynatów geograficznych krakowskich jednostek (JRG 1-7, Balice, Szkoła Aspirantów, Skawina).
-* **Wizualizacja w czasie rzeczywistym:**
-    * Zielone punkty: Jednostki Straży (z licznikiem dostępnych wozów).
-    * Czerwone punkty: Pożary.
-    * Pomarańczowe punkty: Miejscowe Zagrożenia.
-* **Symulacja cyklu życia zgłoszenia:**
-    1.  Generowanie zdarzenia w losowym czasie i lokalizacji.
-    2.  Dysponowanie pojazdów przez SKKM (najbliższe wolne jednostki).
-    3.  Dojazd na miejsce (symulowany czas).
-    4.  Obsługa zdarzenia lub powrót (w przypadku fałszywego alarmu).
-    5.  Powrót do bazy i przywrócenie gotowości bojowej.
-* **Wielowątkowość:** Niezależne wątki dla generatora zdarzeń, renderowania mapy (GUI) oraz każdego samochodu bojowego.
+* **Real-world Map:** Accurate representation of geographical coordinates for Kraków rescue units (JRG 1-7, Balice, Aspirants School, Skawina).
+* **Real-time Visualization:**
+    * Green dots: Fire Stations (with a live counter of available trucks).
+    * Red dots: Fires.
+    * Orange dots: Local Threats.
+* **Incident Lifecycle Simulation:**
+    1.  Incident generation at a random time and location.
+    2.  Vehicle dispatching by SKKM (nearest available units).
+    3.  Travel to the site (simulated time).
+    4.  Handling the incident or returning (in case of a false alarm).
+    5.  Return to base and restoration of combat readiness.
+* **Multithreading:** Independent threads for the incident generator, map rendering (GUI), and every individual fire truck.
 
-## 🛠️ Zastosowane Wzorce Projektowe
+## 🛠️ Design Patterns Applied
 
-Projekt został zrealizowany z naciskiem na architekturę oprogramowania i wzorce projektowe (GoF):
+The project was developed with a strong emphasis on software architecture and **Gang of Four (GoF)** design patterns:
 
-1.  **MVC (Model-View-Controller):** Wyraźny podział na logikę (paczka `model`), sterowanie (`controller`) i warstwę prezentacji (`view`).
-2.  **Obserwator (Observer):**
-    * `GeneratorZdarzen` (Subject) powiadamia `SKKM` oraz `Mapę` o nowych zagrożeniach.
-    * Luźne powiązania między komponentami.
-3.  **Strategia (Strategy):**
-    * Interfejs `StrategiaZdarzenia` pozwala na różną obsługę typów zdarzeń.
-    * `StrategiaPozar`: wymaga 3 aut, dłuższy czas akcji.
-    * `StrategiaMZ`: wymaga 2 aut, krótszy czas akcji.
-4.  **Stan (State):**
-    * Klasa `Auto` posiada stan (`StanWolny`, `StanZajety`), który determinuje, czy pojazd może zostać zadysponowany.
+1.  **MVC (Model-View-Controller):** Clear separation between business logic (`model`), control logic (`controller`), and the presentation layer (`view`).
+2.  **Observer:**
+    * `GeneratorZdarzen` (Subject) notifies `SKKM` and `Map` about new threats.
+    * Ensures loose coupling between components.
+3.  **Strategy:**
+    * `StrategiaZdarzenia` interface allows for different handling of incident types.
+    * `StrategiaPozar`: Requires 3 cars, longer action duration.
+    * `StrategiaMZ`: Requires 2 cars, shorter action duration.
+4.  **State:**
+    * The `Auto` class holds a state (`StanWolny`, `StanZajety`), which determines if the vehicle can be dispatched.
 5.  **Iterator:**
-    * Używany w `SKKM` do iterowania po liście jednostek posortowanej według odległości od zdarzenia (od najbliższej do najdalszej).
+    * Used in `SKKM` to iterate through the list of units sorted by distance from the incident (from nearest to furthest).
 
-## 📂 Struktura Projektu
-
-```text
-src/
-├── controller/
-│   ├── GeneratorZdarzen.java   # Wątek generujący zagrożenia
-│   └── SKKM.java               # Mózg operacji (dysponowanie)
-├── model/
-│   ├── Auto.java               # Wątek pojedynczego samochodu
-│   ├── JednostkaStrazy.java    # Kontener dla aut i lokalizacji
-│   ├── StanPojazdu.java        # Interfejs Stanu
-│   ├── StrategiaZdarzenia.java # Interfejs Strategii
-│   ├── Wspolrzedne.java        # Obliczenia geograficzne (dystans)
-│   ├── Zdarzenie.java          # Reprezentacja pożaru/zagrożenia
-│   └── ... (Inne klasy modelu)
-├── view/
-│   └── Mapa.java               # Rysowanie (JPanel, Graphics2D)
-└── Main.java                   # Punkt startowy, konfiguracja wątków
-```
-## 💻 Podgląd UI
+## 💻UI Preview
 <img width="1523" height="604" alt="lab4" src="https://github.com/user-attachments/assets/640a1151-66b1-4e6e-a5ea-d38dd86f770c" />
